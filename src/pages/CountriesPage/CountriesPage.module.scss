@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+// .top {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 10px;
+//   align-items: center;
+//   @media (max-width: 992px) {
+//     flex-direction: column;
+//     align-items: stretch;
+//   }
+// }
+
+.top {
+  display: grid;
+  grid-template-columns: 1fr minmax(50px, 300px);
+  align-items: center;
+  gap: 10px;
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+}
