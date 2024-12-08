@@ -1,29 +1,33 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCountriesByRegionLoadingStatus, selectActiveRegion, changeActiveRegion } from '../../redux/slices/countriesByRegionSlice';
+import { selectActiveRegion, selectIsLoadingCountriesByRegion, changeActiveRegion } from '../../redux/slices/countriesByRegionSlice';
 import { REGIONS } from '../../utils/constants';
 
 import styles from './RegionalFilter.module.scss';
 
 const RegionalFilter = () => {
 
-  const countriesByRegionLoadingStatus = useSelector(selectCountriesByRegionLoadingStatus);
   const activeRegion = useSelector(selectActiveRegion);
+  const isLoading = useSelector(selectIsLoadingCountriesByRegion);
 
   const dispatch = useDispatch();
-  
-  const buttons = REGIONS.map(region => (
-    <button 
-      key={region} 
-      className={region === activeRegion ? styles.active : null}
-      disabled={countriesByRegionLoadingStatus === 'loading'}
-      onClick={() => dispatch(changeActiveRegion(region))}
-    >
-      {region}
-    </button>
-  ));
+
+  const buttons = REGIONS.map(region => {
+    const isActive = region === activeRegion;
+
+    return (
+      <button
+        key={region}
+        className={isActive ? styles.active : null}
+        disabled={isLoading}
+        onClick={() => dispatch(changeActiveRegion(region))}
+      >
+        {region}
+      </button>
+    );
+  });
 
   return (
-    <div className={styles.root}>
+    <div className={styles.btnGroup}>
       {buttons}
     </div>
   );

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { getCountriesByRegion } from '../../services/countriesApi';
+import { STATUSES } from "../../utils/constants";
 
 export const fetchCountriesByRegion = createAsyncThunk(
   'countriesByRegion/fetchCountriesByRegion',
@@ -8,13 +9,12 @@ export const fetchCountriesByRegion = createAsyncThunk(
 
 const initialState = {
   countriesByRegion: [],
-  countriesByRegionLoadingStatus: 'loading',
+  countriesByRegionLoadingStatus: STATUSES.LOADING,
   activeRegion: 'Europe',
   pagination: {
-    totalPages: null,
     currentPage: 1,
     totalItems: null,
-    itemsPerPage: 15
+    itemsPerPage: 9
   }
 };
 
@@ -30,42 +30,47 @@ const countriesByRegionSlice = createSlice({
     },
     updateItemsPerPage: (state, action) => {
       state.pagination.itemsPerPage = action.payload;
-      state.pagination.totalPages = Math.ceil(state.pagination.totalItems / state.pagination.itemsPerPage);
-      state.pagination.currentPage = Math.min(Math.max(state.pagination.currentPage, 1), state.pagination.totalPages);
+      state.pagination.currentPage = Math.min(
+        state.pagination.currentPage, 
+        Math.ceil(state.pagination.totalItems / state.pagination.itemsPerPage)
+      );
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCountriesByRegion.pending, (state) => {
-        state.countriesByRegionLoadingStatus = 'loading';
+        state.countriesByRegionLoadingStatus = STATUSES.LOADING;
       })
       .addCase(fetchCountriesByRegion.fulfilled, (state, action) => {
-        state.countriesByRegionLoadingStatus = 'success';
+        state.countriesByRegionLoadingStatus = STATUSES.SUCCESS;
         state.countriesByRegion = action.payload;
         state.pagination.totalItems = action.payload.length;
         state.pagination.currentPage = 1;
-        state.pagination.totalPages = Math.ceil(state.pagination.totalItems / state.pagination.itemsPerPage);
       })
       .addCase(fetchCountriesByRegion.rejected, (state) => {
-        state.countriesByRegionLoadingStatus = 'error';
+        state.countriesByRegionLoadingStatus = STATUSES.ERROR;
       })
       .addDefaultCase(() => { });
   },
   selectors: {
-    selectCountriesByRegionAllData: (state) => state,
     selectCountriesByRegion: (state) => state.countriesByRegion,
     selectCountriesByRegionLoadingStatus: (state) => state.countriesByRegionLoadingStatus,
     selectActiveRegion: (state) => state.activeRegion,
-    selectPagination: (state) => state.pagination
+    selectPagination: (state) => state.pagination,
+    selectPaginationTotalItems: (state) => state.pagination.totalItems,
+    selectPaginationItemsPerPage: (state) => state.pagination.itemsPerPage,
+    selectPaginationCurrentPage: (state) => state.pagination.currentPage
   }
 });
 
-export const { 
-  selectCountriesByRegionAllData,
+export const {
   selectCountriesByRegion,
-  selectCountriesByRegionLoadingStatus, 
+  selectCountriesByRegionLoadingStatus,
   selectActiveRegion,
-  selectPagination
+  selectPagination,
+  selectPaginationTotalItems,
+  selectPaginationItemsPerPage,
+  selectPaginationCurrentPage
 } = countriesByRegionSlice.selectors;
 
 export const selectCountriesByRegionWithPagination = createSelector(
@@ -77,6 +82,49 @@ export const selectCountriesByRegionWithPagination = createSelector(
 
     return countries.slice(startIndex, endIndex);
   }
+);
+
+export const selectPaginationItemsInfo = createSelector(
+  selectPaginationTotalItems,
+  selectPaginationItemsPerPage,
+  (totalItems, itemsPerPage) => ({ totalItems, itemsPerPage })
+);
+
+export const selectPaginationItemsSettings = createSelector(
+  selectPaginationTotalItems,
+  (totalItems) => {
+    const step = 3;
+    const minItemsPerPage = 9;
+
+    return {
+      totalItems,
+      step,
+      minItemsPerPage,
+      maxItemsPerPage: Math.max(totalItems, Math.ceil(totalItems / step) * step)
+    }
+  }
+);
+
+export const selectPaginationTotalPages = createSelector(
+  selectPaginationItemsInfo,
+  ({ totalItems, itemsPerPage }) => totalItems && Math.ceil(totalItems / itemsPerPage)
+);
+
+export const selectPaginationPagesInfo = createSelector(
+  selectPaginationTotalPages,
+  selectPaginationCurrentPage,
+  (totalPages, currentPage) => ({
+    totalPages,
+    currentPage,
+    isMoreThanOnePage: totalPages > 1,
+    hasPrevPage: currentPage > 1,
+    hasNextPage: currentPage < totalPages
+  })
+);
+
+export const selectIsLoadingCountriesByRegion = createSelector(
+  selectCountriesByRegionLoadingStatus,
+  (status) => status === STATUSES.LOADING
 );
 
 export const { changeActiveRegion, updateCurrentPage, updateItemsPerPage } = countriesByRegionSlice.actions;

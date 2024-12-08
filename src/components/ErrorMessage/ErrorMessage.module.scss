@@ -1,16 +1,19 @@
 .root {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
+  flex-grow: 1;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  text-align: center;
+  .ob {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
 }
 
 .img {
+  display: block;
   width: 250px;
   height: 250px;
 }

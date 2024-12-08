@@ -1,66 +1,62 @@
-import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCountriesByRegionLoadingStatus, selectPagination, updateCurrentPage } from '../../redux/slices/countriesByRegionSlice';
+import { selectPaginationPagesInfo, selectIsLoadingCountriesByRegion, updateCurrentPage } from '../../redux/slices/countriesByRegionSlice';
 
 import styles from './CountriesListPagination.module.scss';
 
-const CountriesListPagination = () => {
+const CountriesListPagination = ({ scrollToCountriesList }) => {
 
-  const countriesByRegionLoadingStatus = useSelector(selectCountriesByRegionLoadingStatus);
-  const { totalPages, currentPage } = useSelector(selectPagination);
+  const { totalPages, currentPage, isMoreThanOnePage, hasPrevPage, hasNextPage } = useSelector(selectPaginationPagesInfo);
+  const isLoading = useSelector(selectIsLoadingCountriesByRegion);
+
   const dispatch = useDispatch();
 
-  const [isScrolled, setIsScrolled] = useState(false);
+  if (!isMoreThanOnePage) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (isScrolled) {
-      const element = document.getElementById('target-element');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-      setIsScrolled(false);
-    }
-  }, [currentPage, isScrolled]);
+  const onPageChange = (page, isCurrentPage) => {
+    if (isCurrentPage) return;
 
-  // if (countriesByRegionLoadingStatus !== 'success') {
-  //   return null;
-  // }
+    dispatch(updateCurrentPage(page));
+    setTimeout(scrollToCountriesList, 150);
+  }
+  
+  const prevPageButton = hasPrevPage && (
+    <button className={styles.prevPage} disabled={isLoading} onClick={() => onPageChange(currentPage - 1)}>
+      {'<'}
+    </button>
+  );
 
-  const onHandleScroll = (e) => {
-    e.preventDefault();
-    setIsScrolled(true);
-  };
+  const pageNumberButtons = [...Array(totalPages)].map((_, i) => {
+    const page = i + 1;
+    const isActive = page === currentPage;
+
+    return (
+      <button
+        key={page}
+        className={isActive ? styles.active : null}
+        disabled={isLoading}
+        onClick={() => onPageChange(page, isActive)}
+      >
+        {page}
+      </button>
+    );
+  });
+
+  const nextPageButton = hasNextPage && (
+    <button className={styles.nextPage} disabled={isLoading} onClick={() => onPageChange(currentPage + 1)}>
+      {'>'}
+    </button>
+  );
 
   return (
-    <ul className={styles.root}>
-      {/* {currentPage !== 1 && <li onClick={() => dispatch(updateCurrentPage(currentPage - 1))}>{'<'}</li>} */}
-      <li className={currentPage === 1 ? styles.hidden : null} onClick={(e) => {
-        dispatch(updateCurrentPage(currentPage - 1));
-        onHandleScroll(e);
-      }}>{'<'}</li>
-
-      {[...Array(totalPages)].map((_, i) => {
-        const page = i + 1;
-        return (
-          <li
-            key={page}
-            className={page === currentPage ? styles.active : null}
-            onClick={(e) => {
-              onHandleScroll(e);
-              dispatch(updateCurrentPage(page));
-            }}
-          >
-            {page}
-          </li>
-        );
-      })}
-
-      {/* {currentPage !== totalPages && <li onClick={() => dispatch(updateCurrentPage(currentPage + 1))}>{'>'}</li>} */}
-      <li className={currentPage === totalPages ? styles.hidden : null} onClick={(e) => {
-        dispatch(updateCurrentPage(currentPage + 1));
-        onHandleScroll(e);
-      }}>{'>'}</li>
-    </ul>
+    <div className={styles.pagination}>
+      {prevPageButton}
+      <div className={styles.pages}>
+        {pageNumberButtons}
+      </div>
+      {nextPageButton}
+    </div>
   );
 }
 

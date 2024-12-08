@@ -11,7 +11,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <Layout />,
       children: [
         {
@@ -28,7 +28,7 @@ const App = () => {
         },
       ],
     },
-  ]);
+  ], { basename: '/countries-app' });
 
   return <RouterProvider router={router} />;
 }

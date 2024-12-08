@@ -112,7 +112,13 @@
   &__info {
     p {
       font-size: 14px;
-      color: #666;
+      color: rgba(44, 44, 44, 0.3607843137);
+      font-weight: 400;
+      font-weight: 400;
+      color: #666666;
+      span {
+        font-weight: 500;
+      }
     }
   }
 }
@@ -141,14 +147,5 @@
   font-size: 14px;
   color: rgba(44, 44, 44, 0.3607843137);
   font-weight: 400;
-  margin-bottom: 1px;
-}
-
-.capital {
-  font-size: 14px;
-  color: rgba(44, 44, 44, 0.3607843137);
-  font-weight: 400;
-  span {
-    font-weight: 500;
-  }
+  margin-bottom: 2px;
 }

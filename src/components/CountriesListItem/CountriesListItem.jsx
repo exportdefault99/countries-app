@@ -18,6 +18,8 @@
 
 // export default CountriesListItem;
 
+import CapitalCountry from '../CapitalCountry/CapitalCountry';
+
 import styles from './CountriesListItem.module.scss';
 
 const CountriesListItem = ({ name, subregion, capital, flagImg, flagAlt, alphaCode, onClick }) => {
@@ -30,7 +32,7 @@ const CountriesListItem = ({ name, subregion, capital, flagImg, flagAlt, alphaCo
       </div>
       <div className={styles.root__info}>
         <p className={styles.subregion}>{subregion}</p>
-        <p className={styles.capital}>Capital: <span>{capital}</span></p>
+        { capital && <CapitalCountry capital={capital} /> }
       </div>
       <div className={styles.circle}>
         <span>{alphaCode}</span>

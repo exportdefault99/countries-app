@@ -1,3 +1,5 @@
+import { useRef, useCallback } from 'react';
+
 import RegionalFilter from '../../components/RegionalFilter/RegionalFilter';
 import CountriesPerPage from '../../components/CountriesPerPage/CountriesPerPage';
 import CountriesList from '../../components/CountriesList/CountriesList';
@@ -6,6 +8,14 @@ import CountriesListPagination from '../../components/CountriesListPagination/Co
 import styles from './CountriesPage.module.scss';
 
 const CountriesPage = () => {
+
+  const countriesListRef = useRef(null);
+
+  const scrollToCountriesList = useCallback(() => {
+    if (countriesListRef.current) {
+      countriesListRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
   
   return (
     <section className={styles.root}>
@@ -13,8 +23,8 @@ const CountriesPage = () => {
         <RegionalFilter />
         <CountriesPerPage />
       </div>
-      <CountriesList />
-      <CountriesListPagination />
+      <CountriesList ref={countriesListRef} />
+      <CountriesListPagination scrollToCountriesList={scrollToCountriesList} />
     </section>
   );
 }
