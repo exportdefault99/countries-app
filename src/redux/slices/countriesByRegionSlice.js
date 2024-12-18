@@ -4,12 +4,18 @@ import { STATUSES } from "../../utils/constants";
 
 export const fetchCountriesByRegion = createAsyncThunk(
   'countriesByRegion/fetchCountriesByRegion',
-  getCountriesByRegion
+  getCountriesByRegion, {
+    condition: (region, { getState }) => {
+      const { regionLoadedCountries } = getState().countriesByRegion;
+      return regionLoadedCountries !== region;
+    }
+  }
 );
 
 const initialState = {
   countriesByRegion: [],
   countriesByRegionLoadingStatus: STATUSES.LOADING,
+  regionLoadedCountries: null,
   activeRegion: 'Europe',
   pagination: {
     currentPage: 1,
@@ -46,9 +52,13 @@ const countriesByRegionSlice = createSlice({
         state.countriesByRegion = action.payload;
         state.pagination.totalItems = action.payload.length;
         state.pagination.currentPage = 1;
+        state.regionLoadedCountries = state.activeRegion;
       })
       .addCase(fetchCountriesByRegion.rejected, (state) => {
         state.countriesByRegionLoadingStatus = STATUSES.ERROR;
+        state.countriesByRegion = [];
+        state.pagination.totalItems = null;
+        state.regionLoadedCountries = null;
       })
       .addDefaultCase(() => { });
   },
@@ -125,6 +135,19 @@ export const selectPaginationPagesInfo = createSelector(
 export const selectIsLoadingCountriesByRegion = createSelector(
   selectCountriesByRegionLoadingStatus,
   (status) => status === STATUSES.LOADING
+);
+
+export const selectIsErrorCountriesByRegion = createSelector(
+  selectCountriesByRegionLoadingStatus,
+  (status) => status === STATUSES.ERROR
+);
+
+export const selectCountriesByRegionStatusFlags = createSelector(
+  selectCountriesByRegionLoadingStatus,
+  (status) => ({
+    isLoading: status === STATUSES.LOADING,
+    isError: status === STATUSES.ERROR
+  })
 );
 
 export const { changeActiveRegion, updateCurrentPage, updateItemsPerPage } = countriesByRegionSlice.actions;

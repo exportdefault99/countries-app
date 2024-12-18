@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { 
   selectCountriesByRegionWithPagination, 
   selectIsLoadingCountriesByRegion,
+  selectIsErrorCountriesByRegion,
   selectActiveRegion, 
   fetchCountriesByRegion 
 } from '../../redux/slices/countriesByRegionSlice';
-import { changeCountryName } from '../../redux/slices/countryInfoSlice';
+import { changeSelectedCountryName } from '../../redux/slices/countryInfoSlice';
 
 import CountriesListItem from '../CountriesListItem/CountriesListItem';
 import Spinner from '../Spinner/Spinner';
@@ -18,6 +19,7 @@ const CountriesList = forwardRef((_, ref) => {
 
   const countries = useSelector(selectCountriesByRegionWithPagination);
   const isLoading = useSelector(selectIsLoadingCountriesByRegion);
+  const isError = useSelector(selectIsErrorCountriesByRegion);
   const activeRegion = useSelector(selectActiveRegion);
 
   const dispatch = useDispatch();
@@ -26,12 +28,18 @@ const CountriesList = forwardRef((_, ref) => {
     dispatch(fetchCountriesByRegion(activeRegion));
   }, [dispatch, activeRegion]);
 
-  // return <ErrorMessage>An error has occurred. Try again.</ErrorMessage>;
-  // return <Spinner />;
-  const elements = countries.map(item => <CountriesListItem key={item.name} onClick={() => dispatch(changeCountryName(item.name))} {...item} />);
+  if (isLoading && !countries.length) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <ErrorMessage><p>An error has occurred.<br/>Try again.</p></ErrorMessage>;
+  }
+
+  const elements = countries.map(item => <CountriesListItem key={item.name} onClick={() => dispatch(changeSelectedCountryName(item.name))} {...item} />);
 
   return (
-    <ul ref={ref} className={styles.root}>
+    <ul ref={ref} className={`${styles.root} ${isLoading ? styles.loading : ''}`}>
       {elements}
     </ul>
   );

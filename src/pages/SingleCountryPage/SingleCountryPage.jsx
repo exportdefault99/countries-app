@@ -15,7 +15,6 @@ const SingleCountryPage = () => {
       .then(data => setCountry(data[0]));
   }, [countryName]);
 
-  console.log(country?.borders);
   return country && (
     <section className="country-details-container">
       <span className="back-button">

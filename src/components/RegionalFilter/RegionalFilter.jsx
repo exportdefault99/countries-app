@@ -11,6 +11,12 @@ const RegionalFilter = () => {
 
   const dispatch = useDispatch();
 
+  const onRegionChange = (region, isCurrentRegion) => {
+    if (isCurrentRegion) return;
+
+    dispatch(changeActiveRegion(region));
+  }
+
   const buttons = REGIONS.map(region => {
     const isActive = region === activeRegion;
 
@@ -19,7 +25,7 @@ const RegionalFilter = () => {
         key={region}
         className={isActive ? styles.active : null}
         disabled={isLoading}
-        onClick={() => dispatch(changeActiveRegion(region))}
+        onClick={() => onRegionChange(region, isActive)}
       >
         {region}
       </button>

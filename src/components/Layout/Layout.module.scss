@@ -21,8 +21,8 @@
   }
   & > main {
     display: grid;
-    min-height: 250px;
-    position: relative;
+    // min-height: 250px;
+    // position: relative;
     @media (max-width: 768px) {
       grid-row: 3 / 4;
     }

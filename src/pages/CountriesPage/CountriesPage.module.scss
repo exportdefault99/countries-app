@@ -6,12 +6,23 @@
 
 .top {
   display: grid;
-  grid-template-columns: 1fr minmax(220px, 280px);
-  grid-template-rows: minmax(62px, auto);
+  grid-template-columns: minmax(430px, 1fr) minmax(220px, 280px);
+  grid-template-rows: minmax(64px, auto);
   align-items: center;
   gap: 10px;
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto minmax(64px, auto);
+  }
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > ul {
+    width: 100%;
+    height: 100%;
   }
 }
