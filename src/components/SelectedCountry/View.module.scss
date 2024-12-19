@@ -133,6 +133,34 @@
   display: grid;
   grid-template-columns: max-content 1fr;
   border: 1px solid rgb(83, 81, 81);
+  & > div {
+    display: contents;
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      background-color: #bbb7b7;
+      border-right: 1px solid rgb(83, 81, 81);
+      border-bottom: 1px solid rgb(83, 81, 81);
+      font-weight: 500;
+      color: #666666;
+    }
+    span {
+      padding: 5px;
+      text-align: center;
+      background-color: #9c9696;
+      border-bottom: 1px solid rgb(83, 81, 81);
+      color: #333;
+      font-weight: 600;
+    }
+    &:last-child {
+      p,
+      span {
+        border-bottom: none;
+      }
+    }
+  }
   // row-gap: 8px;
   // grid-template-rows: repeat(4, auto);
   // row-gap: 5px;
