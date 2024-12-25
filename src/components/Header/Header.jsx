@@ -10,18 +10,12 @@ const Header = () => {
         <ul>
           <li>
             <NavLink to="/">
-              Countries of the world
+              Countries of the world 🌍
             </NavLink>
           </li>
           <li>
             <NavLink to="/countries">
               Countries
-            </NavLink>
-          </li>
-          /
-          <li>
-            <NavLink to="/other">
-              Other
             </NavLink>
           </li>
         </ul>

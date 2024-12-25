@@ -11,21 +11,16 @@ const CountriesPage = () => {
 
   const countriesListRef = useRef(null);
 
-  // const scrollToCountriesList = useCallback(() => {
-  //   if (countriesListRef.current) {
-  //     countriesListRef.current.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // }, []);
-
   const scrollToCountriesList = useCallback(() => {
-    if (countriesListRef.current) {
-      const element = countriesListRef.current;
-      const rect = element.getBoundingClientRect();
-      const isFullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+    const element = countriesListRef.current;
+
+    if (!element) return;
+
+    const { top, bottom } = element.getBoundingClientRect();
+    const isFullyVisible = top >= 0 && bottom <= window.innerHeight;
       
-      if (!isFullyVisible) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (!isFullyVisible) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
 

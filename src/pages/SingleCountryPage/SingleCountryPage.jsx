@@ -1,19 +1,30 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCountryByFullName } from '../../services/countriesApi';
+import { resetSelectedCountry } from '../../redux/slices/countryInfoSlice';
+
+import CountryDisplayField from '../../components/CountryDisplayField/CountryDisplayField';
 
 import './SingleCountryPage.scss';
 
 const SingleCountryPage = () => {
 
   const [country, setCountry] = useState(null);
-
+  const dispatch = useDispatch();
   const { countryName } = useParams();
 
   useEffect(() => {
+    dispatch(resetSelectedCountry());
     getCountryByFullName(countryName.replace(/-/g, ' '))
       .then(data => setCountry(data[0]));
-  }, [countryName]);
+  }, [dispatch, countryName]);
+
+  useEffect(() => {
+    fetch('https://restcountries.com/v3.1/name/russia')
+      .then(res => res.json())
+      .then(data => console.log(data));
+  }, []);
 
   return country && (
     <section className="country-details-container">
@@ -25,16 +36,14 @@ const SingleCountryPage = () => {
         <div className="details-text-container">
           <h1>{country.name}</h1>
           <div className="details-text">
-            <p><b>Official Name: </b><span className="native-name">{country.officialName}</span></p>
-            <p><b>Population: </b><span className="population">{country.population}</span></p>
-            <p><b>Region: </b><span className="region">{country.region}</span></p>
-            <p><b>Sub Region: </b><span className="sub-region">{country.subregion}</span></p>
-            <p><b>Capital: </b><span className="capital">{country.capital}</span></p>
-            <p>
-              <b>Top Level Domain: </b><span className="top-level-domain">{country.topLevelDomain.join(', ')}</span>
-            </p>
-            <p><b>Currencies: </b><span className="currencies">{country.currencies}</span></p>
-            <p><b>Languages: </b><span className="languages">{country.languages.join(', ')}</span></p>
+            <CountryDisplayField singularLabel="Official" data={country.officialName} />
+            <CountryDisplayField singularLabel="Region" data={country.region} />
+            <CountryDisplayField singularLabel="Subregion" data={country.subregion} />
+            {country.capital && <CountryDisplayField singularLabel="Capital" pluralLabel="Capitals" data={country.capital} />}
+            <CountryDisplayField singularLabel="Population" data={country.population} />
+            <CountryDisplayField singularLabel="Currency" pluralLabel="Currencies" data={country.currencies} />
+            <CountryDisplayField singularLabel="TLD" pluralLabel="TLDs" data={country.topLevelDomains} />
+            <CountryDisplayField singularLabel="Language" pluralLabel="Languages" data={country.languages} />
           </div>
           {/* <div className="border-countries">
             <b>Border Countries: {country.borders.map(item => <a key={item}>{item}</a>)}</b>

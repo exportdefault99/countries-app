@@ -1,18 +1,26 @@
+.search {
+  padding-inline: 4px;
+  color: rgba(44, 44, 44, 0.3607843137);
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: auto;
   grid-template-rows: auto auto;
   align-content: space-between;
+  justify-items: start;
   min-height: 64px;
 }
 
 .errorText {
-  text-align: center;
   color: red;
+  font-weight: 400;
 }
 
 .root {
-  grid-row: 2 / 3;
+  width: 100%;
   position: relative;
 
   input {

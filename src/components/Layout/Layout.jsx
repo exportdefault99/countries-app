@@ -25,9 +25,11 @@
 // export default Layout;
 
 import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
 
 import Header from '../Header/Header';
 import Aside from '../Aside/Aside';
+import Spinner from '../Spinner/Spinner';
 
 import styles from './Layout.module.scss';
 
@@ -37,7 +39,9 @@ const Layout = () => {
     <div className={styles.app}>
       <Header />
       <main>
-        <Outlet />
+        <Suspense fallback={<Spinner styles={{ placeSelf: 'center' }} />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Aside />
     </div>

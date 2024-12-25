@@ -12,9 +12,11 @@
 
 .country-details {
   flex-grow: 1;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   align-items: center;
-  gap: 64px;
+  justify-items: center;
+  gap: 20px;
 }
 
 .country-details img {
@@ -22,12 +24,24 @@
 }
 
 .details-text {
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-  column-gap: 64px;
-  max-height: 180px;
-  flex-wrap: wrap;
+  display: grid;
+    grid-auto-flow: row;
+    /* Заполнять по строкам */
+    grid-auto-rows: auto;
+    /* Высота строки */
+    // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* Автоматическое добавление колонок */
+    gap: 10px;
+    max-height: 200px;
+    /* Расстояние между элементами */
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  // display: flex;
+  // flex-direction: column;
+  // row-gap: 12px;
+  // column-gap: 24px;
+  // max-height: 180px;
+  // flex-wrap: wrap;
 }
 
 .border-countries {

@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPaginationPagesInfo, selectIsLoadingCountriesByRegion, updateCurrentPage } from '../../redux/slices/countriesByRegionSlice';
+import { selectPaginationPagesInfo, selectIsLoadingCountriesByRegion, updateCurrentPage, resetPagination } from '../../redux/slices/countriesByRegionSlice';
 
 import styles from './CountriesListPagination.module.scss';
 
@@ -10,6 +11,12 @@ const CountriesListPagination = ({ scrollToCountriesList }) => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    return () => {
+      dispatch(resetPagination());
+    };
+  }, [dispatch]);
+  
   if (!isMoreThanOnePage) {
     return null;
   }

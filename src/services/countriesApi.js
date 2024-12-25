@@ -14,7 +14,7 @@ const _transformCountry = (country) => ({
   languages: Object.values(country.languages),
   alphaCode: country.cca2,
   urlPath: country.name.common.replace(/\s+/g, '-').toLowerCase(),
-  topLevelDomain: country.tld,
+  topLevelDomains: country.tld,
   borders: country.borders
 });
 

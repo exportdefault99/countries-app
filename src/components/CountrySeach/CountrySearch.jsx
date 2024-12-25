@@ -21,7 +21,7 @@ const CountrySearch = () => {
       dispatch(changeSearchTerm(value.trim()));
       const query = value.trim();
       if (query && query.length < 3) {
-        setError('Minimum number of characters - 3');
+        setError('Please enter at least 3 characters');
       } else {
         setError(null);
       }
@@ -34,8 +34,15 @@ const CountrySearch = () => {
 
   return (
     <div className={styles.wrapper}>
+      <label htmlFor="search" className={styles.search}>
+        Search:
+        {error && <span className={styles.errorText}> {error}</span>}
+        {!error && isError && <span className={styles.errorText}> No results</span>}
+      </label>
       <div className={styles.root}>
         <input
+          id='search'
+          autoComplete="off"
           className={error && styles.error}
           value={value}
           type="text"
@@ -44,8 +51,6 @@ const CountrySearch = () => {
         />
         {isLoading && <Spinner height='30px' width='30px' styles={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '10px' }} />}
       </div>
-      {error && <p className={styles.errorText}>{error}</p>}
-      {!error && isError && <p className={styles.errorText}>No results</p>}
     </div>
   );
 }

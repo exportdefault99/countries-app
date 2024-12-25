@@ -26,6 +26,12 @@ const countryInfoSlice = createSlice({
     changeSelectedCountryName: (state, action) => {
       state.selectedCountryName = action.payload;
       state.country = state.cacheSelectedCountries[action.payload] || state.country;
+      state.countryLoadingStatus = state.country ? STATUSES.SUCCESS : state.countryLoadingStatus;
+    },
+    resetSelectedCountry: (state) => {
+      state.countryLoadingStatus = STATUSES.IDLE;
+      state.selectedCountryName = null;
+      state.country = null;
     }
   },
   extraReducers: (builder) => {
@@ -50,6 +56,6 @@ const countryInfoSlice = createSlice({
 
 export const { selectCountryInfoAllData } = countryInfoSlice.selectors;
 
-export const { changeSelectedCountryName } = countryInfoSlice.actions;
+export const { changeSelectedCountryName, resetSelectedCountry } = countryInfoSlice.actions;
 
 export default countryInfoSlice.reducer;
