@@ -1,4 +1,15 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .country-details-container {
+  animation: fadeIn 1.2s ease-in-out;
   display: flex;
   flex-direction: column;
 }

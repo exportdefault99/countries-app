@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPaginationPagesInfo, selectIsLoadingCountriesByRegion, updateCurrentPage, resetPagination } from '../../redux/slices/countriesByRegionSlice';
+import { scrollToElement } from '../../utils/scrollToElement';
 
 import styles from './CountriesListPagination.module.scss';
 
-const CountriesListPagination = ({ scrollToCountriesList }) => {
+const CountriesListPagination = ({ countriesListRef }) => {
 
   const { totalPages, currentPage, isMoreThanOnePage, hasPrevPage, hasNextPage } = useSelector(selectPaginationPagesInfo);
   const isLoading = useSelector(selectIsLoadingCountriesByRegion);
@@ -25,11 +26,11 @@ const CountriesListPagination = ({ scrollToCountriesList }) => {
     if (isCurrentPage) return;
 
     dispatch(updateCurrentPage(page));
-    setTimeout(scrollToCountriesList, 150);
+    setTimeout(() => scrollToElement(countriesListRef), 150);
   }
   
   const prevPageButton = hasPrevPage && (
-    <button className={styles.prevPage} disabled={isLoading} onClick={() => onPageChange(currentPage - 1)}>
+    <button className={styles.prevPage} disabled={isLoading} onClick={() => onPageChange(currentPage - 1, false)}>
       {'<'}
     </button>
   );
@@ -51,7 +52,7 @@ const CountriesListPagination = ({ scrollToCountriesList }) => {
   });
 
   const nextPageButton = hasNextPage && (
-    <button className={styles.nextPage} disabled={isLoading} onClick={() => onPageChange(currentPage + 1)}>
+    <button className={styles.nextPage} disabled={isLoading} onClick={() => onPageChange(currentPage + 1, false)}>
       {'>'}
     </button>
   );

@@ -106,6 +106,11 @@ const foundCountriesSlice = createSlice({
 
 export const { selectSearchTerm, selectCountriesLoadingStatus, selectCountries } = foundCountriesSlice.selectors;
 
+export const selectTotalFoundCountries = createSelector(
+  selectCountries,
+  (countries) => countries.length
+);
+
 export const selectIsLoadingFoundCountries = createSelector(
   selectCountriesLoadingStatus,
   (status) => status === STATUSES.LOADING

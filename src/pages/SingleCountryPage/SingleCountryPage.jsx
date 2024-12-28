@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getCountryByFullName } from '../../services/countriesApi';
-import { resetSelectedCountry } from '../../redux/slices/countryInfoSlice';
+import { useLoaderData } from 'react-router-dom';
 
 import CountryDisplayField from '../../components/CountryDisplayField/CountryDisplayField';
 
@@ -10,27 +6,10 @@ import './SingleCountryPage.scss';
 
 const SingleCountryPage = () => {
 
-  const [country, setCountry] = useState(null);
-  const dispatch = useDispatch();
-  const { countryName } = useParams();
+  const { country } = useLoaderData();
 
-  useEffect(() => {
-    dispatch(resetSelectedCountry());
-    getCountryByFullName(countryName.replace(/-/g, ' '))
-      .then(data => setCountry(data[0]));
-  }, [dispatch, countryName]);
-
-  useEffect(() => {
-    fetch('https://restcountries.com/v3.1/name/russia')
-      .then(res => res.json())
-      .then(data => console.log(data));
-  }, []);
-
-  return country && (
+  return (
     <section className="country-details-container">
-      {/* <a href='#' className="back-button">
-        Back
-      </a> */}
       <div className="country-details">
         <img src={country.flagImg} alt={country.flagAlt} />
         <div className="details-text-container">
@@ -45,9 +24,6 @@ const SingleCountryPage = () => {
             <CountryDisplayField singularLabel="TLD" pluralLabel="TLDs" data={country.topLevelDomains} />
             <CountryDisplayField singularLabel="Language" pluralLabel="Languages" data={country.languages} />
           </div>
-          {/* <div className="border-countries">
-            <b>Border Countries: {country.borders.map(item => <a key={item}>{item}</a>)}</b>
-          </div> */}
         </div>
       </div>
     </section>

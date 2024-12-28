@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsLoadingFoundCountries, selectIsErrorFoundCountries, changeSearchTerm } from '../../redux/slices/foundCountriesSlice';
+import {
+  selectIsLoadingFoundCountries,
+  selectIsErrorFoundCountries,
+  selectIsSuccessFoundCountries,
+  selectTotalFoundCountries,
+  changeSearchTerm
+} from '../../redux/slices/foundCountriesSlice';
 
 import Spinner from '../Spinner/Spinner';
 
@@ -13,17 +19,20 @@ const CountrySearch = () => {
 
   const isLoading = useSelector(selectIsLoadingFoundCountries);
   const isError = useSelector(selectIsErrorFoundCountries);
+  const isSuccess = useSelector(selectIsSuccessFoundCountries);
+  const totalFoundCountries = useSelector(selectTotalFoundCountries);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      dispatch(changeSearchTerm(value.trim()));
-      const query = value.trim();
-      if (query && query.length < 3) {
+      const searchTerm = value.trim();
+
+      if (searchTerm && searchTerm.length < 3) {
         setError('Please enter at least 3 characters');
       } else {
         setError(null);
+        dispatch(changeSearchTerm(searchTerm));
       }
     }, 1000);
 
@@ -38,6 +47,7 @@ const CountrySearch = () => {
         Search:
         {error && <span className={styles.errorText}> {error}</span>}
         {!error && isError && <span className={styles.errorText}> No results</span>}
+        {!error && isSuccess && <span className={styles.success}> Total countries found - {totalFoundCountries}</span>}
       </label>
       <div className={styles.root}>
         <input

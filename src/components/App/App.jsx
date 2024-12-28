@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy } from "react";
+import { getCountryByFullName } from '../../services/countriesApi';
 
 import Layout from '../Layout/Layout';
 import MainPage from '../../pages/MainPage/MainPage';
@@ -26,7 +27,13 @@ const App = () => {
         },
         {
           path: '/countries/:countryName',
-          element: <SingleCountryPage />
+          element: <SingleCountryPage />,
+          loader: async ({ params }) => {
+            const { countryName } = params;
+            const [country] = await getCountryByFullName(countryName.replace(/-/g, ' '));
+            return { country };
+          },
+          errorElement: <NotFoundPage />
         },
         {
           path: '*',
@@ -38,5 +45,5 @@ const App = () => {
 
   return <RouterProvider router={router} />;
 }
- 
+
 export default App;

@@ -1,22 +1,23 @@
-const CountryDisplayField = ({ singularLabel, pluralLabel, data, hasWrapper }) => {
+const CountryDisplayField = ({ singularLabel, pluralLabel, data, shouldTruncate, hasWrapper }) => {
 
-  const isMultiple = Array.isArray(data) && data.length > 1;
+  const isArray = Array.isArray(data);
+  const isMultiple = isArray && data.length > 1;
 
-  const text = isMultiple ? pluralLabel : singularLabel;
-  const content = isMultiple ? data.join(', ') : Array.isArray(data) ? data[0] : data;
+  const label = isMultiple ? pluralLabel : singularLabel;
+  const content = isArray ? shouldTruncate && data.length > 3 ? `${data.slice(0, 3).join(', ')} ...` : data.join(', ') : data;
 
   if (hasWrapper) {
     return (
       <div>
-        <p>{text}:</p>
+        <p>{label}:</p>
         <span>{content}</span>
       </div>
     );
   }
 
   return (
-    <p>{text}: <span>{content}</span></p>
+    <p>{label}: <span>{content}</span></p>
   );
 }
- 
+
 export default CountryDisplayField;
