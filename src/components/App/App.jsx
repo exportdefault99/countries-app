@@ -3,7 +3,6 @@ import { lazy } from "react";
 import { getCountryByFullName } from '../../services/countriesApi';
 
 import Layout from '../Layout/Layout';
-import MainPage from '../../pages/MainPage/MainPage';
 import CountriesPage from '../../pages/CountriesPage/CountriesPage';
 
 const SingleCountryPage = lazy(() => import('../../pages/SingleCountryPage/SingleCountryPage'));
@@ -19,14 +18,10 @@ const App = () => {
       children: [
         {
           path: '/',
-          element: <MainPage />
-        },
-        {
-          path: '/countries',
           element: <CountriesPage />
         },
         {
-          path: '/countries/:countryName',
+          path: '/:countryName',
           element: <SingleCountryPage />,
           loader: async ({ params }) => {
             const { countryName } = params;

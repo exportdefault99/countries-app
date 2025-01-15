@@ -16,6 +16,10 @@
   }
 }
 
+.root {
+  width: 100%;
+}
+
 .country__select {
   font-weight: 700;
   font-size: 18px;
@@ -51,4 +55,32 @@
     background-color: #C4C4C4;
     margin-top: 15px;
   }
+}
+
+//
+@media (max-width: 768px) {
+  .country__select {
+    display: none;
+    font-size: 15px;
+  }
+    .skeleton {
+      &__header {
+        grid-template-columns: 30px auto;
+      }
+  
+      &__circle {
+        width: 30px;
+        height: 30px;
+      }
+  
+      &__mini {
+        height: 15px;
+      }
+  
+      &__block {
+        height: 20px;
+        margin-top: 10px;
+        display: none;
+      }
+    }
 }

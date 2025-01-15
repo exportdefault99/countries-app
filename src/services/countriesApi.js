@@ -36,4 +36,6 @@ export const getCountriesByRegion = (region) => request(`${_apiBase}region/${reg
 
 export const getCountriesByName = (name) => request(`${_apiBase}name/${name}`);
 
+export const getCountriesByAlphaCodes = (alphaCodes) => request(`${_apiBase}alpha/?codes=${alphaCodes}`);
+
 export const getCountryByFullName = (name) => request(`${_apiBase}name/${name}?fullText=true`);

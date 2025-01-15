@@ -7,3 +7,21 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
 }
+
+//
+.wrapper {
+  @media (max-width: 768px) {
+    background-color: rgb(176, 172, 172);
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+    box-shadow: unset;
+    border-radius: unset;
+    &>svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

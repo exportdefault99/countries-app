@@ -4,7 +4,7 @@ const CountryDisplayField = ({ singularLabel, pluralLabel, data, shouldTruncate,
   const isMultiple = isArray && data.length > 1;
 
   const label = isMultiple ? pluralLabel : singularLabel;
-  const content = isArray ? shouldTruncate && data.length > 3 ? `${data.slice(0, 3).join(', ')} ...` : data.join(', ') : data;
+  const content = isArray ? shouldTruncate && data.length > 2 ? `${data.slice(0, 2).join(', ')} ...` : data.join(', ') : data;
 
   if (hasWrapper) {
     return (

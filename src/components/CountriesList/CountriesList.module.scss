@@ -1,10 +1,9 @@
 .root {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, minmax(126px, auto));
+  // grid-template-rows: repeat(3, minmax(126px, auto));
   grid-auto-rows: minmax(126px, auto);
   gap: 20px;
-  // flex-grow: 1;
   transition: opacity 0.3s ease;
   padding-block: 15px;
   &.loading {

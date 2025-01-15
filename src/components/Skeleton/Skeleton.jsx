@@ -3,7 +3,7 @@ import './Skeleton.scss';
 const Skeleton = () => {
 
   return (
-    <div>
+    <div className="root">
       <p className="country__select">Please select a country to see information</p>
       <div className="skeleton">
         <div className="pulse skeleton__header">

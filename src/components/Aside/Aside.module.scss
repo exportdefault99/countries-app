@@ -4,3 +4,11 @@
   row-gap: 10px;
   align-self: start;
 }
+
+//
+.aside {
+  @media (max-width: 768px) {
+    grid-template-rows: auto auto minmax(50px, auto);
+    row-gap: 5px;
+  }
+}

@@ -11,6 +11,7 @@
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;
+    padding-bottom: 50px;
   }
   & > header {
     grid-column: 1 / 3;

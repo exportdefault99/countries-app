@@ -13,11 +13,6 @@ const Header = () => {
               Countries of the world 🌍
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/countries">
-              Countries
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </header>

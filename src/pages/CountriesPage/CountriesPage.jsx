@@ -1,15 +1,10 @@
-import { useRef } from 'react';
-
 import RegionalFilter from '../../components/RegionalFilter/RegionalFilter';
 import CountriesPerPage from '../../components/CountriesPerPage/CountriesPerPage';
-import CountriesList from '../../components/CountriesList/CountriesList';
-import CountriesListPagination from '../../components/CountriesListPagination/CountriesListPagination';
+import CountriesByRegion from '../../components/CountriesByRegion/CountriesByRegion';
 
 import styles from './CountriesPage.module.scss';
 
 const CountriesPage = () => {
-
-  const countriesListRef = useRef(null);
 
   return (
     <section className={styles.root}>
@@ -17,10 +12,7 @@ const CountriesPage = () => {
         <RegionalFilter />
         <CountriesPerPage />
       </div>
-      <div className={styles.content}>
-        <CountriesList ref={countriesListRef} />
-      </div>
-      <CountriesListPagination countriesListRef={countriesListRef} />
+      <CountriesByRegion className={styles.content} />
     </section>
   );
 }
