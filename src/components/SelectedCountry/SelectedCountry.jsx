@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCountryInfoAllData, fetchCountryInfo } from '../../redux/slices/countryInfoSlice';
 import { STATUSES } from '../../utils/constants';
-import { scrollToElement } from '../../utils/scrollToElement';
 
 import Skeleton from '../Skeleton/Skeleton';
 import Spinner from '../Spinner/Spinner';
@@ -22,12 +21,6 @@ const SelectedCountry = () => {
     dispatch(fetchCountryInfo(selectedCountryName));
   }, [dispatch, selectedCountryName]);
 
-  useEffect(() => {
-    if (selectedCountryName && window.innerWidth < 769) {
-      scrollToElement(selectedCountryRef);
-    }
-  }, [selectedCountryName, country]);
-
   const setContent = () => {
     switch (countryLoadingStatus) {
       case STATUSES.IDLE:
@@ -37,7 +30,7 @@ const SelectedCountry = () => {
       case STATUSES.SUCCESS:
         return <View {...country} />;
       case STATUSES.ERROR:
-        return <ErrorMessage>Error</ErrorMessage>
+        return <ErrorMessage className={styles.error}>Error</ErrorMessage>
     }
   }
 
